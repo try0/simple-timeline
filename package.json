@@ -1,0 +1,36 @@
+{
+  "name": "simple-timeline",
+  "version": "0.0.1",
+  "homepage": "https://github.com/try0/simple-timeline",
+  "keywords": ["javascript", "timeline", "web", "mobile"],
+  "author": {
+    "name": "Ryo Tsunoda",
+    "email": "try0.development@gmail.com",
+    "url": "https://github.com/try0"
+  },
+  "license": "MIT",
+  "description": "Simple timeline",
+  "main": "./src/simple-timeline.js",
+  "devDependencies": {
+    "@babel/core": "^7.17.2",
+    "@babel/preset-env": "^7.16.11",
+    "babel-core": "^6.26.3",
+    "babel-loader": "^8.2.3",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-react": "^6.24.1",
+    "css-loader": "^6.6.0",
+    "mini-css-extract-plugin": "^2.5.3",
+    "node-sass": "^7.0.1",
+    "sass": "^1.49.7",
+    "sass-loader": "^12.4.0",
+    "webpack": "^5.68.0",
+    "webpack-cli": "^4.9.2",
+    "webpack-fix-style-only-entries": "^0.6.1"
+  },
+  "dependencies": {
+  },
+  "scripts": {
+    "build": "webpack",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}

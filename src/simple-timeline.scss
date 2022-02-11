@@ -1,0 +1,209 @@
+@charset "UTF-8";
+
+$baseColor: #356ce2;
+$subColor: #b9b9b9;
+
+%st-line {
+    position: absolute;
+    top: 0;
+    left: 18px;
+    transform: translateX(-50%);
+    height: 100%;
+    width: 4px;
+}
+
+%st-point {
+    position: absolute;
+    top: 2em;
+    left: 18px;
+    transform: translate(-50%, -50%);
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+}
+
+%st-current-point {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    content: "";
+    background: $baseColor;
+}
+
+/* Timeline point */
+
+.st-timeline .st-item-container .st-point {
+    @extend %st-point;
+    background: $subColor;
+}
+
+.st-timeline .st-item-container.st-current .st-point {
+    @extend %st-point;
+    background: $baseColor;
+}
+
+.st-timeline .st-item-container.st-current .st-point::after {
+    @extend %st-current-point;
+}
+
+.st-timeline .st-item-container.st-current .st-point::before {
+    @extend %st-current-point;
+    animation: st-pulse 1.5s linear infinite;
+}
+
+.st-timeline .st-item-container.st-next-schedule .st-point {
+    @extend %st-point;
+    background: $subColor;
+}
+
+.st-timeline .st-item-container.st-passed .st-point {
+    @extend %st-point;
+    background-color: $baseColor;
+}
+
+/* Line */
+
+.st-timeline .st-item-container .st-line {
+    @extend %st-line;
+    background: $subColor;
+}
+
+.st-timeline .st-item-container.st-current .st-line {
+    @extend %st-line;
+    background: linear-gradient(180deg, $baseColor 0%, $baseColor 2em, $subColor 2em, $subColor 100%);
+}
+
+.st-timeline .st-item-container.st-next-schedule .st-line {
+    @extend %st-line;
+    background: linear-gradient(180deg, $baseColor 0%, $baseColor 30%, $subColor 30%, $subColor 100%);
+}
+
+.st-timeline .st-item-container.st-passed .st-line {
+    @extend %st-line;
+    background-color: $baseColor;
+}
+
+/* non progress */
+.st-timeline.st-no-progress .st-item-container .st-line {
+    @extend %st-line;
+    background: $baseColor !important;
+}
+
+.st-timeline.st-no-progress .st-item-container .st-point {
+    @extend %st-point;
+    background: $baseColor !important;
+}
+
+/* inverted progress */
+
+.st-timeline.st-inverted-progress .st-item-container .st-point {
+    @extend %st-point;
+    background: $baseColor;
+}
+
+.st-timeline.st-inverted-progress .st-item-container.st-passed .st-point {
+    @extend %st-point;
+    background-color: $subColor;
+}
+
+.st-timeline.st-inverted-progress .st-item-container .st-line {
+    @extend %st-line;
+    background: $baseColor;
+}
+
+.st-timeline.st-inverted-progress .st-item-container.st-current .st-line {
+    @extend %st-line;
+    background: linear-gradient(180deg, $subColor 0%, $subColor 2em, $baseColor 2em, $baseColor 100%);
+}
+
+.st-timeline.st-inverted-progress  .st-item-container.st-next-schedule .st-line {
+    @extend %st-line;
+    background: linear-gradient(180deg, $subColor 0%, $subColor 30%, $baseColor 30%, $baseColor 100%);
+}
+
+.st-timeline.st-inverted-progress .st-item-container.st-passed .st-line {
+    @extend %st-line;
+    background-color: $subColor;
+}
+
+
+/* items */
+.st-item-container {
+    position: relative;
+    margin: 0 auto;
+    padding: 0.5em;
+}
+
+.st-item {
+    padding: 0.8em;
+    margin-left: 2em;
+    background: white;
+    box-shadow: 0 3px 0 #cacaca;
+}
+
+.st-item:before {
+    content: "";
+    position: absolute;
+    display: block;
+    z-index: 1;
+    border-style: solid;
+    border-color: transparent white;
+    border-width: 10px 10px 10px 0;
+    top: 2em;
+    transform: translateY(-50%);
+    left: 2em;
+}
+
+.st-timeline .st-item-container.st-current .st-datetime {
+    font-weight: bold;
+}
+
+.st-timeline .st-item-container.st-current .st-datetime::after {
+    content: "今日";
+    color: white;
+    background: $baseColor;
+    border-radius: 5px;
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+    margin: 0.3em;
+}
+
+.st-item .st-datetime {
+    margin-block-start: 0em;
+    margin-block-end: 0.3em;
+}
+
+.st-item .st-title {
+    font-weight: bold;
+    border-bottom: solid 1px $baseColor;
+}
+
+.st-item .st-content {
+    font-size: 0.8em;
+}
+
+@keyframes st-pulse {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(1.8);
+        opacity: 0;
+    }
+}
+
+
+
+@media screen and (max-width: 959px) {
+    /* タブレット */
+    .st-item {
+        max-width: 100%;
+    }
+}
+@media screen and (max-width: 480px) {
+    /* スマホ用 */
+}

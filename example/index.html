@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Simple Timeline</title>
+
+    <link rel="stylesheet" href="../dist/simple-timeline.css">
+    <script src="../dist/simple-timeline.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+        $(function () {
+            const stl = new SimpleTimeline(document.getElementById("st-timeline-container"), {
+                setting: {
+                    // progress: false,
+                    // progressInverted: true,
+                },
+                timelineItems: [{
+                        passed: true,
+                        datetime: "2022-02-10",
+                        title: "更新予定のお知らせを配信",
+                        content: "アップデートの公開予定を通知します。",
+                    },
+                    {
+                        current: true,
+                        datetime: "2022-02-14 13:00",
+                        title: "アップデートの公開作業実施",
+                        content: "ストアへの公開作業を行います。<br>13時以降に、更新手順を参考に操作してください。<br>お手元の端末でアップデートできるようになるまで、最大で1日ほどかかる可能性があります。<br>" +
+                            "ダミーテキストダミーテキストダミーテキストダミーテキストダミーテキストダミーテキストダミーテキストダミーテキストダミーテキストダミーテキストダミーテキストダミーテキスト<br>" +
+                            "ダミーテキストダミーテキストダミーテキストダミーテキストダミーテキストダミーテキストダミーテキストダミーテキストダミーテキストダミーテキストダミーテキストダミーテキスト<br>",
+                    },
+                    {
+                        passed: false,
+                        datetime: "2022-02-15 13:00　～",
+                        title: "アップデートが表示されない場合、お問い合わせください",
+                        content: "公開作業実施から24時間が経過しています。お手元の端末上のストアでアップデートを確認できない場合、OSが未対応バージョンの可能性があります。" +
+                            "<br>対応バージョンをご確認の上、お問い合わせください。",
+                    },
+
+                ]
+            });
+
+            $("#btn-add-item").on("click", function () {
+                const date = new Date();
+                stl.appendItem({
+                    datetime: date.toLocaleString(),
+                    title: "ダミースケジュール",
+                    content: "ダミースケジュール",
+                })
+            });
+
+        });
+    </script>
+
+    <style>
+        html,
+        body {
+            font-size: 1em;
+            height: 100%;
+            width: 100%;
+            margin: 0;
+            font-family: "ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro", Meiryo, メイリオ, "ＭＳ Ｐゴシック", "MS PGothic", sans-serif;
+            background-color: rgb(214, 214, 214);
+        }
+
+        header {
+            font-size: .8em;
+            width: 100%;
+            height: 50px;
+            background: #CCC;
+            padding: 20px 50px;
+            box-sizing: border-box;
+            position: fixed;
+            top: 0;
+            left: 0;
+            display: flex;
+            align-items: center;
+            z-index: 10;
+            background: #356ce2;
+            color: white;
+        }
+
+        header .menu {
+            display: flex;
+            list-style: none;
+        }
+        .menu a {
+            text-decoration: none;
+            color: white;
+        }
+
+        .container {
+            padding-top: 55px;
+        }
+        @media screen and (min-width: 960px) {
+            .container {
+                width: 65%;
+                min-height: 100%;
+                padding-left: 2em;
+                padding-right: 2em;
+                padding-bottom: 20em;
+                margin: 0 auto;
+                background: rgb(230, 230, 230);
+            }
+        }
+
+        @media screen and (max-width: 959px) {
+            .container {
+                width: 100%;
+                min-height: 100%;
+                padding-bottom: 20em;
+                margin: 0 auto;
+                background: rgb(230, 230, 230);
+            }
+        }
+    </style>
+
+    <style>
+
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>simple-timeline</h1>
+        <nav>
+            <ul class="menu">
+                <li><a href="https://github.com/try0/simple-timeline" target="_blank">GirHub</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="container">
+        <div id="st-timeline-container"></div>
+        <button id="btn-add-item">追加</button>
+    </main>
+</body>
+
+</html>
