@@ -9,7 +9,7 @@ $subColor: #b9b9b9;
     left: 18px;
     transform: translateX(-50%);
     height: 100%;
-    width: 4px;
+    width: 2px;
 }
 
 %st-point {
@@ -54,11 +54,6 @@ $subColor: #b9b9b9;
     animation: st-pulse 1.5s linear infinite;
 }
 
-.st-timeline .st-item-container.st-next-schedule .st-point {
-    @extend %st-point;
-    background: $subColor;
-}
-
 .st-timeline .st-item-container.st-passed .st-point {
     @extend %st-point;
     background-color: $baseColor;
@@ -76,9 +71,9 @@ $subColor: #b9b9b9;
     background: linear-gradient(180deg, $baseColor 0%, $baseColor 2em, $subColor 2em, $subColor 100%);
 }
 
-.st-timeline .st-item-container.st-next-schedule .st-line {
+.st-timeline .st-item-container.st-passed-last .st-line {
     @extend %st-line;
-    background: linear-gradient(180deg, $baseColor 0%, $baseColor 30%, $subColor 30%, $subColor 100%);
+    background: linear-gradient(180deg, $baseColor 0%, $baseColor 20%, $subColor 60%, $subColor 100%);
 }
 
 .st-timeline .st-item-container.st-passed .st-line {
@@ -119,9 +114,9 @@ $subColor: #b9b9b9;
     background: linear-gradient(180deg, $subColor 0%, $subColor 2em, $baseColor 2em, $baseColor 100%);
 }
 
-.st-timeline.st-inverted-progress  .st-item-container.st-next-schedule .st-line {
+.st-timeline.st-inverted-progress .st-item-container.st-passed-last .st-line {
     @extend %st-line;
-    background: linear-gradient(180deg, $subColor 0%, $subColor 30%, $baseColor 30%, $baseColor 100%);
+    background: linear-gradient(180deg, $subColor 0%, $subColor 20%, $baseColor 60%, $baseColor 100%);
 }
 
 .st-timeline.st-inverted-progress .st-item-container.st-passed .st-line {
@@ -129,6 +124,18 @@ $subColor: #b9b9b9;
     background-color: $subColor;
 }
 
+/* header */
+.st-header {
+    background: #356ce2;
+    color: white;
+    padding: 0 0.5em;
+}
+
+.st-footer {
+    background: #356ce2;
+    color: white;
+    padding: 0 0.5em;
+}
 
 /* items */
 .st-item-container {
@@ -141,6 +148,8 @@ $subColor: #b9b9b9;
     padding: 0.8em;
     margin-left: 2em;
     background: white;
+    border-color: white;
+    color: #333333;
     box-shadow: 0 1px 2px 0 #cacaca;
 }
 
@@ -150,7 +159,11 @@ $subColor: #b9b9b9;
     display: block;
     z-index: 1;
     border-style: solid;
-    border-color: transparent white;
+    // border-color: transparent white;
+    border-top-color: transparent;
+    border-right-color: inherit;
+    border-bottom-color: transparent;
+    border-left-color: inherit;
     border-width: 10px 10px 10px 0;
     top: 2em;
     transform: translateY(-50%);
@@ -161,8 +174,8 @@ $subColor: #b9b9b9;
     font-weight: bold;
 }
 
-.st-timeline .st-item-container.st-current .st-datetime::after {
-    content: "今日";
+.st-timeline .st-item-container.st-current .st-datetime::before {
+    content: "Today";
     color: white;
     background: $baseColor;
     border-radius: 5px;
