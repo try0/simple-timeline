@@ -92,7 +92,7 @@ export default class SimpleTimeline {
     /**
      * Clears timeline item elements
      */
-    clearitems() {
+    clearItems() {
 
         if (this.container.firstChild) {
             this.container.removeChild(this.container.firstChild);
@@ -117,7 +117,7 @@ export default class SimpleTimeline {
      */
     renderTimeline() {
 
-        this.clearitems();
+        this.clearItems();
 
         // render header
         if (this.option.header) {
