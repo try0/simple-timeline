@@ -223,7 +223,8 @@ export default class SimpleTimeline {
 
 
         const titleElm = document.createElement("p");
-        titleElm.innerHTML = timelineItem.title;
+        const isEmptyTitle = this.#isEmpty(timelineItem, "title");
+        titleElm.innerHTML = isEmptyTitle ? "" : timelineItem.title;
         titleElm.className = "st-title";
 
         if (itemOption.borderColor != null) {
@@ -231,12 +232,16 @@ export default class SimpleTimeline {
         }
 
         const contentElm = document.createElement("div");
-        contentElm.innerHTML = timelineItem.content;
+        const isEmptyContent = this.#isEmpty(timelineItem, "content");
+        contentElm.innerHTML = isEmptyContent ? "" : timelineItem.content;
         contentElm.className = "st-content"
 
         itemElm.appendChild(datetimeElm);
-        itemElm.appendChild(titleElm);
-        itemElm.appendChild(contentElm);
+
+        if (!isEmptyTitle || !isEmptyContent) {
+            itemElm.appendChild(titleElm);
+            itemElm.appendChild(contentElm);
+        }
 
         itemContainerElm.appendChild(itemWraperElm);
 
@@ -346,6 +351,23 @@ export default class SimpleTimeline {
         }
 
         return Object.prototype.hasOwnProperty.call(obj, propName)
+    }
+
+    #hasPropertyValue(obj, propName) {
+        if (!this.#hasProperty(obj, propName)) {
+            return false;
+        }
+
+        const value = obj[propName];
+        return value !== undefined || value !== null;
+    }
+
+    #isEmpty(obj, propName) {
+        if (!this.#hasPropertyValue(obj, propName)) {
+            return true;
+        }
+
+        return "" == obj[propName];
     }
 
     #getItemDate(timelineItem) {
