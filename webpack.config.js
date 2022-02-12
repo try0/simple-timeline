@@ -2,6 +2,7 @@ const path = require('path');
 const webpack = require('webpack');
 const packagejson = require('./package.json');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const ESLintPlugin = require('eslint-webpack-plugin');
 
 module.exports = {
 
@@ -50,6 +51,10 @@ module.exports = {
     externals: {
     },
     plugins: [
+        new ESLintPlugin({
+            extensions: ['.ts', '.js'],
+            exclude: 'node_modules'
+        }),
         new MiniCssExtractPlugin({
             filename: 'simple-timeline.css',
         }),
