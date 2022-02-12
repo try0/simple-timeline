@@ -86,7 +86,7 @@ export default class SimpleTimeline {
         for (var i = 0; i < timelineItems.length; i++) {
             const timelineItem = timelineItems[i];
 
-            var itemContainerElm = this.appendItem(timelineItem);
+            this.appendItem(timelineItem);
         }
     }
 
