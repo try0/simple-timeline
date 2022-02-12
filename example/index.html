@@ -9,52 +9,40 @@
     <link rel="stylesheet" href="../dist/simple-timeline.css">
     <script src="../dist/simple-timeline.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fomantic-ui/2.8.8/semantic.min.css"
+        integrity="sha512-pbLYRiE96XJxmJgF8oWBfa9MdKwuXhlV7vgs2LLlapHLXceztfcta0bdeOgA4reIf0WH67ThWzA684JwkM3zfQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fomantic-ui/2.8.8/semantic.min.js"
+        integrity="sha512-t5mAtfZZmR2gl5LK7WEkJoyHCfyzoy10MlerMGhxsXl3J7uSSNTAW6FK/wvGBC8ua9AFazwMaC0LxsMTMiM5gg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/vs.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
     <script>
         $(function () {
-            const stl = new SimpleTimeline(document.getElementById("timeline-container"), {
-                setting: {
-                    // debug: false,
-                    progress: false,
-                    // progressInverted: true,
-                    // dateFormatter: (date) => date.toLocaleDateString(),
-                    // currentLabel: "Today",
-                    autoProgress: false,
-                    header: {
-                        label: "Start"
-                    },
-                    footer: {
-                        label: "End"
-                    }
+            const stl = new SimpleTimeline(document.getElementById("timeline-container-1"), {
+                option: {
                 },
                 items: [
                     {
-                        // state: "passed",
                         date: "2022-01-01",
                         title: "更新予定のお知らせを配信",
                         content: "アップデートの公開予定を通知します。",
-                        option: {
-                            backgroundColor: "white",
-                            fontColor: "#444444",
-                            borderColor: "#356ce2"
-                        }
                     },
                     {
-                        // state: "current",
                         date: "2022-01-10",
                         title: "アップデートの公開作業実施",
-                        content: "ストアへの公開作業を行います。<br>13時以降に、更新手順を参考に操作してください。<br>お手元の端末でアップデートできるようになるまで、最大で1日ほどかかる可能性があります。<br>" +
-                            "ダミーテキストダミーテキストダミーテキストダミーテキストダミーテキストダミーテキストダミーテキストダミーテキストダミーテキストダミーテキストダミーテキストダミーテキスト<br>" +
-                            "ダミーテキストダミーテキストダミーテキストダミーテキストダミーテキストダミーテキストダミーテキストダミーテキストダミーテキストダミーテキストダミーテキストダミーテキスト<br>",
+                        content: "ストアへの公開作業を行います。<br>13時以降に、更新手順を参考に操作してください。<br>お手元の端末でアップデートできるようになるまで、最大で1日ほどかかる可能性があります。",
                     },
                     {
-                        // state: "schedule",
                         date: "2022-01-12 00:00",
                         title: "アップデートが表示されない場合、お問い合わせください",
                         content: "公開作業実施から24時間が経過しています。お手元の端末上のストアでアップデートを確認できない場合、お問い合わせください。" +
                             "<br>※OSが未対応バージョンの可能性があります。対応バージョンをご確認の上、お問い合わせください。",
                     },
                     {
-                        // state: "schedule",
                         date: "2999-01-01 00:00",
                         title: "ダミースケジュール",
                         content: "ダミースケジュール",
@@ -62,13 +50,134 @@
                 ]
             });
 
+
+            var count = 1;
             $("#btn-add-item").on("click", function () {
                 const date = new Date();
                 stl.insertItem({
                     date: date.toLocaleString(),
-                    title: "ダミースケジュール",
+                    title: "ダミースケジュール " + count,
                     content: "ダミースケジュール " + date.toLocaleString(),
-                })
+                });
+
+                count += 1;
+            });
+
+
+            const stl2 = new SimpleTimeline(document.getElementById("timeline-container-2"), {
+                option: {
+                    progress: true,
+                    currentLabel: "Current"
+                },
+                items: [
+                    {
+                        state: "passed",
+                        date: "2022-01-01",
+                        title: "Passed item",
+                        content: "Passed item",
+                    },
+                    {
+                        state: "current",
+                        date: "2022-01-02",
+                        title: "Current item",
+                        content: "Current item",
+                    },
+                    {
+                        state: "schedule",
+                        date: "2022-01-03",
+                        title: "Schedule item",
+                        content: "Schedule item",
+                    },
+                ]
+            });
+
+            const stlInvertedProgress = new SimpleTimeline(document.getElementById("timeline-container-inverted-progress"), {
+                option: {
+                    progress: true,
+                    progressInverted: true,
+                    currentLabel: "Current"
+                },
+                items: [
+                    {
+                        state: "passed",
+                        date: "2022-01-01",
+                        title: "Passed item",
+                        content: "Passed item",
+                    },
+                    {
+                        state: "current",
+                        date: "2022-01-02",
+                        title: "Current item",
+                        content: "Current item",
+                    },
+                    {
+                        state: "schedule",
+                        date: "2022-01-03",
+                        title: "Schedule item",
+                        content: "Schedule item",
+                    },
+                ]
+            });
+
+            const stl3 = new SimpleTimeline(document.getElementById("timeline-container-3"), {
+                option: {
+                },
+                items: [
+                    {
+                        date: "2022-01-01",
+                        title: "Custom style item",
+                        content: "Custom style item",
+                        option: {
+                            backgroundColor: "white",
+                            fontColor: "green",
+                            borderColor: "green"
+                        }
+                    },
+                    {
+                        date: "2022-01-02",
+                        title: "Custom style item",
+                        content: "Custom style item",
+                        option: {
+                            backgroundColor: "white",
+                            fontColor: "blue",
+                            borderColor: "blue"
+                        }
+                    },
+                    {
+                        date: "2022-01-03",
+                        title: "Custom style item",
+                        content: "Custom style item",
+                        option: {
+                            backgroundColor: "white",
+                            fontColor: "red",
+                            borderColor: "red"
+                        }
+                    },
+
+                ]
+            });
+
+            const stlHeaderFooter = new SimpleTimeline(document.getElementById("timeline-container-hf"), {
+                option: {
+                    header: {
+                        label: "Header"
+                    },
+                    footer: {
+                        label: "Footer"
+                    }
+                },
+                items: [
+                    {
+                        date: "2022-01-01",
+                        title: "Item 1",
+                        content: "Item 1",
+                    },
+                    {
+                        date: "2022-01-02",
+                        title: "Item 2",
+                        content: "Item 2",
+                    }
+                ]
             });
 
         });
@@ -85,37 +194,6 @@
             background-color: rgb(214, 214, 214);
         }
 
-        header {
-            font-size: .8em;
-            width: 100%;
-            height: 50px;
-            background: #CCC;
-            padding: 20px 50px;
-            box-sizing: border-box;
-            position: fixed;
-            top: 0;
-            left: 0;
-            display: flex;
-            align-items: center;
-            z-index: 10;
-            background: #356ce2;
-            color: white;
-        }
-
-        header .menu {
-            display: flex;
-            list-style: none;
-        }
-
-        .menu a {
-            text-decoration: none;
-            color: white;
-        }
-
-        .container {
-            padding-top: 55px;
-        }
-
         @media screen and (min-width: 960px) {
             .container {
                 width: 65%;
@@ -126,6 +204,8 @@
                 margin: 0 auto;
                 background: rgb(230, 230, 230);
             }
+
+
         }
 
         @media screen and (max-width: 959px) {
@@ -137,6 +217,19 @@
                 background: rgb(230, 230, 230);
             }
         }
+
+
+        .code-segment {
+            margin: .6em;
+        }
+
+        pre {
+            margin: 0px;
+        }
+
+        hr {
+            margin: 2em;
+        }
     </style>
 
     <style>
@@ -145,18 +238,154 @@
 </head>
 
 <body>
-    <header>
-        <h1>simple-timeline</h1>
-        <nav>
-            <ul class="menu">
-                <li><a href="https://github.com/try0/simple-timeline" target="_blank">GitHub</a></li>
-            </ul>
-        </nav>
-    </header>
+
+    <div class="ui fixed inverted menu" style="background-color: #356ce2;">
+
+        <h1 class="ui small header item">simple-timeline</h1>
+
+        <div class="right menu">
+            <a class="item" target="blank" href="https://github.com/try0/simple-timeline"><i
+                    class="github large icon"></i></a>
+        </div>
+    </div>
 
     <main class="container">
-        <div id="timeline-container"></div>
-        <button id="btn-add-item">追加</button>
+
+        <div style="padding-top: 4em;"></div>
+        <div class="example-item">
+            <div class="code-segment">
+                <h3 class="ui top attached header">
+                    Default timeline
+                </h3>
+                <div class="ui attached segment ">
+                    <pre><code class="javascript">
+option: {
+}
+                </code></pre>
+                </div>
+            </div>
+            <div id="timeline-container-1"></div>
+            <button id="btn-add-item" class="ui primary button"
+                style="margin: 1em; width: 10em; background-color: #356ce2;">追加</button>
+        </div>
+        <hr>
+
+
+        <div class="example-item">
+            <div class="code-segment">
+                <h3 class="ui top attached header">
+                    Progress
+                </h3>
+                <div class="ui attached segment ">
+                    <pre><code class="javascript">
+option: {
+    progress: true,
+    currentLabel: "Current"
+}
+                </code></pre>
+                </div>
+            </div>
+            <div id="timeline-container-2"></div>
+        </div>
+        <hr>
+
+
+
+        <div class="example-item">
+            <div class="code-segment">
+                <h3 class="ui top attached header">
+                    Inverted progress
+                </h3>
+                <div class="ui attached segment ">
+                    <pre><code class="javascript">
+option: {
+    progress: true,
+    progressInverted: true,
+    currentLabel: "Current"
+}
+                </code></pre>
+                </div>
+            </div>
+            <div id="timeline-container-inverted-progress"></div>
+        </div>
+        <hr>
+
+
+        <div class="example-item">
+            <div class="code-segment">
+                <h3 class="ui top attached header">
+                    Custome style item
+                </h3>
+                <div class="ui attached segment ">
+                    <pre><code class="javascript">
+new SimpleTimeline(document.getElementById("timeline-container-3"), {
+    option: {
+    },
+    items: [
+        {
+            date: "2022-01-01",
+            title: "Custom style item",
+            content: "Custom style item",
+            option: {
+                backgroundColor: "white",
+                fontColor: "green",
+                borderColor: "green"
+            }
+        },
+        {
+            date: "2022-01-02",
+            title: "Custom style item",
+            content: "Custom style item",
+            option: {
+                backgroundColor: "white",
+                fontColor: "blue",
+                borderColor: "blue"
+            }
+        },
+        {
+            date: "2022-01-03",
+            title: "Custom style item",
+            content: "Custom style item",
+            option: {
+                backgroundColor: "white",
+                fontColor: "red",
+                borderColor: "red"
+            }
+        },
+
+    ]
+});
+                </code></pre>
+                </div>
+            </div>
+            <div id="timeline-container-3"></div>
+        </div>
+        <hr>
+
+
+        <div class="example-item">
+            <div class="code-segment">
+                <h3 class="ui top attached header">
+                    Header, Footer
+                </h3>
+                <div class="ui attached segment ">
+                    <pre><code class="javascript">
+option: {
+    header: {
+        label: "Header"
+    },
+    footer: {
+        label: "Footer"
+    }
+}
+                </code></pre>
+                </div>
+            </div>
+            <div id="timeline-container-hf"></div>
+        </div>
+        <hr>
+
+
     </main>
 </body>
 
