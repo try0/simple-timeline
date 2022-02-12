@@ -180,6 +180,49 @@
                 ]
             });
 
+            const stlContent = new SimpleTimeline(document.getElementById("timeline-container-content"), {
+                option: {
+                },
+                items: [
+                    {
+                        date: "2022-01-01",
+                        title: "Only title",
+                    },
+                    {
+                        date: "2022-01-02",
+                        content: "Only content",
+                    },
+                    {
+                        date: "2022-01-03",
+                    }
+                ]
+            });
+
+            const stlFormatter = new SimpleTimeline(document.getElementById("timeline-container-formatter"), {
+                option: {
+                    dateFormatter: function(date) {
+                        return date.toISOString();
+                    }
+                },
+                items: [
+                    {
+                        date: "2022-01-01 00:00",
+                        title: "Item 1",
+                        content: "Item 1"
+                    },
+                    {
+                        date: "2022-01-01 01:00",
+                        title: "Item 2",
+                        content: "Item 2"
+                    },
+                    {
+                        date: "2022-01-01 02:00",
+                        title: "Item 3",
+                        content: "Item 3"
+                    }
+                ]
+            });
+
         });
     </script>
 
@@ -385,6 +428,55 @@ option: {
         </div>
         <hr>
 
+
+        <div class="example-item">
+            <div class="code-segment">
+                <h3 class="ui top attached header">
+                    Only title, content, date
+                </h3>
+                <div class="ui attached segment ">
+                    <pre><code class="javascript">
+const stlContent = new SimpleTimeline(document.getElementById("timeline-container-content"), {
+    option: {
+    },
+    items: [
+        {
+            date: "2022-01-01",
+            title: "Only title",
+        },
+        {
+            date: "2022-01-02",
+            content: "Only content",
+        }
+    ]
+});
+                </code></pre>
+                </div>
+            </div>
+            <div id="timeline-container-content"></div>
+        </div>
+        <hr>
+
+
+        
+        <div class="example-item">
+            <div class="code-segment">
+                <h3 class="ui top attached header">
+                    Date formatter
+                </h3>
+                <div class="ui attached segment ">
+                    <pre><code class="javascript">
+option: {
+    dateFormatter: function(date) {
+        return date.toISOString();
+    }
+}
+                </code></pre>
+                </div>
+            </div>
+            <div id="timeline-container-formatter"></div>
+        </div>
+        <hr>
 
     </main>
 </body>
