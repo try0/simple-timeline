@@ -28,6 +28,16 @@ export default class SimpleTimeline {
         fontColor: null,
     }
 
+    static globalOption = {};
+
+    static setGlobalOption(globalOption) {
+        if (!globalOption) {
+            SimpleTimeline.globalOption = {};
+            return;
+        }
+        
+        SimpleTimeline.globalOption = globalOption;
+    }
 
 
     /**
@@ -381,6 +391,7 @@ export default class SimpleTimeline {
     #getMergeOption(priorityOpition) {
         let merged = {};
         merged = Object.assign(merged, SimpleTimeline.defaultOption);
+        merged = Object.assign(merged, SimpleTimeline.globalOption);
         merged = Object.assign(merged, priorityOpition);
         return merged;
     }
