@@ -7,7 +7,6 @@ import "./simple-timeline.scss"
  */
 export default class SimpleTimeline {
 
-
     static defaultOption = {
         debug: false,
         // Renders a line reflecting the state of the timeline item.
@@ -103,7 +102,7 @@ export default class SimpleTimeline {
         this.timeline = document.createElement("div");
         this.timeline.className = "st-timeline";
 
-        if (this.option.progress != null && !this.option.progress) {
+        if (!this.option.progress) {
             this.timeline.classList.add("st-no-progress");
         }
 
@@ -226,6 +225,10 @@ export default class SimpleTimeline {
         const titleElm = document.createElement("p");
         titleElm.innerHTML = timelineItem.title;
         titleElm.className = "st-title";
+
+        if (itemOption.borderColor != null) {
+            titleElm.style.borderColor = itemOption.borderColor;
+        }
 
         const contentElm = document.createElement("div");
         contentElm.innerHTML = timelineItem.content;
@@ -366,5 +369,5 @@ export default class SimpleTimeline {
         }
         return timelineItems;
     }
-    
+
 }
