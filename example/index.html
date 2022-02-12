@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -10,40 +11,55 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script>
         $(function () {
-            const stl = new SimpleTimeline(document.getElementById("st-timeline-container"), {
+            const stl = new SimpleTimeline(document.getElementById("timeline-container"), {
                 setting: {
-                    // progress: false,
+                    // debug: false,
+                    progress: false,
                     // progressInverted: true,
+                    // dateFormatter: (date) => date.toLocaleDateString(),
+                    // currentLabel: "Today",
+                    autoProgress: false,
+                    header: {
+                        label: "Start"
+                    },
+                    footer: {
+                        label: "End"
+                    }
                 },
-                timelineItems: [{
-                        passed: true,
-                        datetime: "2022-02-10",
+                items: [
+                    {
+                        // state: "passed",
+                        date: "2022-02-10",
                         title: "更新予定のお知らせを配信",
                         content: "アップデートの公開予定を通知します。",
+                        option: {
+                            backgroundColor: "white",
+                            fontColor: "#444444",
+                            borderColor: "#356ce2"
+                        }
                     },
                     {
-                        current: true,
-                        datetime: "2022-02-14 13:00",
+                        // state: "current",
+                        date: "2022-02-12",
                         title: "アップデートの公開作業実施",
                         content: "ストアへの公開作業を行います。<br>13時以降に、更新手順を参考に操作してください。<br>お手元の端末でアップデートできるようになるまで、最大で1日ほどかかる可能性があります。<br>" +
                             "ダミーテキストダミーテキストダミーテキストダミーテキストダミーテキストダミーテキストダミーテキストダミーテキストダミーテキストダミーテキストダミーテキストダミーテキスト<br>" +
                             "ダミーテキストダミーテキストダミーテキストダミーテキストダミーテキストダミーテキストダミーテキストダミーテキストダミーテキストダミーテキストダミーテキストダミーテキスト<br>",
                     },
                     {
-                        passed: false,
-                        datetime: "2022-02-15 13:00　～",
+                        // state: "schedule",
+                        date: "2022-02-15 13:00",
                         title: "アップデートが表示されない場合、お問い合わせください",
                         content: "公開作業実施から24時間が経過しています。お手元の端末上のストアでアップデートを確認できない場合、OSが未対応バージョンの可能性があります。" +
                             "<br>対応バージョンをご確認の上、お問い合わせください。",
-                    },
-
+                    }
                 ]
             });
 
             $("#btn-add-item").on("click", function () {
                 const date = new Date();
                 stl.appendItem({
-                    datetime: date.toLocaleString(),
+                    date: date.toLocaleString(),
                     title: "ダミースケジュール",
                     content: "ダミースケジュール",
                 })
@@ -84,6 +100,7 @@
             display: flex;
             list-style: none;
         }
+
         .menu a {
             text-decoration: none;
             color: white;
@@ -92,6 +109,7 @@
         .container {
             padding-top: 55px;
         }
+
         @media screen and (min-width: 960px) {
             .container {
                 width: 65%;
@@ -125,13 +143,13 @@
         <h1>simple-timeline</h1>
         <nav>
             <ul class="menu">
-                <li><a href="https://github.com/try0/simple-timeline" target="_blank">GirHub</a></li>
+                <li><a href="https://github.com/try0/simple-timeline" target="_blank">GitHub</a></li>
             </ul>
         </nav>
     </header>
 
     <main class="container">
-        <div id="st-timeline-container"></div>
+        <div id="timeline-container"></div>
         <button id="btn-add-item">追加</button>
     </main>
 </body>
