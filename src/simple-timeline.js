@@ -29,6 +29,8 @@ export default class SimpleTimeline {
         fontColor: null,
     }
 
+
+
     /**
      * Container element
      */
@@ -136,9 +138,12 @@ export default class SimpleTimeline {
         // render timeline items
         const currentDate = this.option.autoProgress ? new Date() : null;
         const items = this.getItems();
+
+        this.#sortItemsOrderByDate(items);
+
         for (var i = 0; i < items.length; i++) {
             const timelineItem = items[i];
-            this.appendItem(timelineItem, currentDate);
+            this.#appendItem(timelineItem, currentDate);
         }
 
         // render footer
@@ -156,14 +161,7 @@ export default class SimpleTimeline {
         }
     }
 
-    /**
-     * Appends timeline item
-     * 
-     * @param {*} timelineItem 
-     * @returns 
-     */
-    appendItem(timelineItem, currentDate = null) {
-
+    createItemContainer(timelineItem, currentDate = null) {
         const itemDate = this.#getItemDate(timelineItem);
 
         const itemContainerElm = document.createElement("div");
@@ -238,9 +236,51 @@ export default class SimpleTimeline {
         itemElm.appendChild(contentElm);
 
         itemContainerElm.appendChild(itemWraperElm);
+
+        timelineItem["refElm"] = itemContainerElm;
+
+        return itemContainerElm;
+    }
+
+    /**
+     * Appends timeline item
+     * 
+     * @param {*} timelineItem 
+     * @returns 
+     */
+    #appendItem(timelineItem, currentDate = null) {
+
+        const itemContainerElm = this.createItemContainer(timelineItem, currentDate);
         this.timeline.appendChild(itemContainerElm);
 
         return itemContainerElm;
+    }
+
+    insertItem(timelineItem) {
+        const itemContainerElm = this.createItemContainer(timelineItem);
+        const itemDate = this.#getItemDate(timelineItem);
+
+        const items = this.getItems();
+
+        var beforeItem = null;
+        for (var i = 0; i < items.length; i++) {
+            const createdItem = items[i];
+            const createdItemDate = this.#getItemDate(createdItem);
+
+            if (createdItemDate > itemDate) {
+                if (beforeItem == null) {
+                    this.timeline.appendChild(itemContainerElm);
+                } else {
+                    beforeItem.after(itemContainerElm);
+                }
+
+                items.splice(i, 0, timelineItem);
+                break;
+            }
+
+            beforeItem = createdItem["refElm"];
+        }
+
     }
 
 
@@ -313,11 +353,18 @@ export default class SimpleTimeline {
         return itemDate;
     }
 
-
     #getMergeOption(priorityOpition) {
         let merged = {};
         merged = Object.assign(merged, SimpleTimeline.defaultOption);
         merged = Object.assign(merged, priorityOpition);
         return merged;
     }
+
+    #sortItemsOrderByDate(timelineItems) {
+        if (timelineItems) {
+            timelineItems.sort((i1, i2) => (this.#getItemDate(i1) > this.#getItemDate(i2) ? 1 : -1));
+        }
+        return timelineItems;
+    }
+    
 }
