@@ -9,6 +9,7 @@ export default class SimpleTimeline {
 
     static defaultOption = {
         debug: false,
+        linePosition: "left",
         // Renders a line reflecting the state of the timeline item.
         progress: false,
         // Invertes the progress of the line.
@@ -23,6 +24,7 @@ export default class SimpleTimeline {
     };
 
     static defaultItemOption = {
+        position: "right",
         backgroundColor: null,
         borderColor: null,
         fontColor: null,
@@ -116,6 +118,17 @@ export default class SimpleTimeline {
         this.timeline = document.createElement("div");
         this.timeline.className = "st-timeline";
 
+        switch (this.option.linePosition) {
+            case 'right':
+                this.timeline.classList.add("st-right-line");
+                break;
+            case 'center':
+                this.timeline.classList.add("st-center-line");
+                break;
+            default:
+                this.timeline.classList.add("st-left-line");
+        }
+
         if (!this.option.progress) {
             this.timeline.classList.add("st-no-progress");
         }
@@ -176,12 +189,14 @@ export default class SimpleTimeline {
 
     createItemContainer(timelineItem, currentDate = null) {
         const itemDate = this.#getItemDate(timelineItem);
+        const itemOption = this.#getItemOption(timelineItem);
+
 
         const itemContainerElm = document.createElement("div");
         itemContainerElm.className = "st-item-container";
-
         itemContainerElm.setAttribute("data-st-date", itemDate.toISOString());
 
+        // 状態
         if (this.option.autoProgress && currentDate != null) {
             if (itemDate.getTime() < currentDate.getTime()) {
                 itemContainerElm.classList.add("st-passed");
@@ -202,22 +217,40 @@ export default class SimpleTimeline {
         }
 
 
+
+
+        const progressWraper = document.createElement("div");
+        progressWraper.className = "st-progress-wraper";
+        itemContainerElm.appendChild(progressWraper);
+
         const lineElm = document.createElement("div");
         lineElm.className = "st-line";
-        itemContainerElm.appendChild(lineElm);
+        progressWraper.appendChild(lineElm);
 
         const linePointElm = document.createElement("div");
         linePointElm.className = "st-point ";
-        itemContainerElm.appendChild(linePointElm);
+        progressWraper.appendChild(linePointElm);
+
+
 
         const itemWraperElm = document.createElement("div");
         itemWraperElm.className = "st-item-wraper";
+
+        if (this.option.linePosition == "center") {
+            if (itemOption.position == "left") {
+                itemWraperElm.classList.add("st-left");
+            } else {
+                itemWraperElm.classList.add("st-right");
+            }
+        }
+
+
 
         const itemElm = document.createElement("div");
         itemElm.className = "st-item";
         itemWraperElm.appendChild(itemElm);
 
-        const itemOption = this.#getItemOption(timelineItem);
+
         if (itemOption.backgroundColor != null) {
             itemElm.style.background = itemOption.backgroundColor;
             itemElm.style.borderColor = itemOption.backgroundColor;
@@ -228,6 +261,8 @@ export default class SimpleTimeline {
         if (itemOption.fontColor != null) {
             itemElm.style.color = itemOption.fontColor;
         }
+
+
 
         const datetimeElm = document.createElement("p");
 
@@ -387,7 +422,7 @@ export default class SimpleTimeline {
     #getItemDate(timelineItem) {
         let itemDate = timelineItem.date;
         if (!(itemDate instanceof Date)) {
-            itemDate = new Date(itemDate.replace(/-/g,"/"));
+            itemDate = new Date(itemDate.replace(/-/g, "/"));
         }
         return itemDate;
     }

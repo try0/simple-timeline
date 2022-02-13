@@ -1,12 +1,17 @@
 @charset "UTF-8";
+@use "sass:math";
 
 $baseColor: #356ce2;
 $subColor: #b9b9b9;
 
+$progressContainerWidth: 3em;
+$pointSize: 20px;
+
+
 %st-line {
     position: absolute;
     top: 0;
-    left: 18px;
+    left: math.div($progressContainerWidth, 2);
     transform: translateX(-50%);
     height: 100%;
     width: 2px;
@@ -14,11 +19,11 @@ $subColor: #b9b9b9;
 
 %st-point {
     position: absolute;
-    top: 2em;
-    left: 18px;
+    top: 2.5em;
+    left: math.div($progressContainerWidth, 2);
     transform: translate(-50%, -50%);
-    width: 20px;
-    height: 20px;
+    width: $pointSize;
+    height: $pointSize;
     border-radius: 50%;
 }
 
@@ -26,8 +31,8 @@ $subColor: #b9b9b9;
     position: absolute;
     top: 0;
     left: 0;
-    width: 20px;
-    height: 20px;
+    width: $pointSize;
+    height: $pointSize;
     border-radius: 50%;
     content: "";
     background: $baseColor;
@@ -125,35 +130,38 @@ $subColor: #b9b9b9;
 }
 
 /* header */
-.st-header {
+.st-timeline .st-header {
     background: #356ce2;
     color: white;
     padding: 0 0.5em;
 }
 
-.st-footer {
+.st-timeline .st-footer {
     background: #356ce2;
     color: white;
     padding: 0 0.5em;
 }
 
 /* items */
-.st-item-container {
+.st-timeline .st-item-container {
     position: relative;
     margin: 0 auto;
-    padding: 0.5em;
 }
-
-.st-item {
+.st-timeline .st-item-wraper {
+    padding: 0.5em 0;
+}
+.st-timeline .st-item {
+    position: relative;
     padding: 0.8em;
-    margin-left: 2em;
+    margin: 0 0.5em;
     background: white;
     border-color: white;
     color: #333333;
     box-shadow: 0 1px 2px 0 #cacaca;
 }
 
-.st-item:before {
+/* 吹き出し */
+.st-timeline .st-item:before {
     content: "";
     position: absolute;
     display: block;
@@ -163,11 +171,34 @@ $subColor: #b9b9b9;
     border-right-color: inherit;
     border-bottom-color: transparent;
     border-left-color: inherit;
+    transform: translateY(-50%);
+
     border-width: 10px 10px 10px 0;
     top: 2em;
-    transform: translateY(-50%);
-    left: 2em;
+    left: -10px;
 }
+.st-timeline .st-right .st-item:before {
+    border-width: 10px 10px 10px 0;
+    right: inherit;
+    left: -10px;
+}
+.st-timeline .st-left .st-item:before {
+    border-width: 10px 0 10px 10px;
+    right: -10px;
+    left: inherit;
+}
+.st-timeline.st-left-line .st-item:before {
+    border-width: 10px 10px 10px 0;
+    right: inherit;
+    left: -10px;
+}
+.st-timeline.st-right-line .st-item:before {
+    border-width: 10px 0 10px 10px;
+    right: -10px;
+    left: inherit;
+}
+
+
 
 .st-timeline .st-item-container.st-current .st-datetime {
     font-weight: bold;
@@ -183,18 +214,71 @@ $subColor: #b9b9b9;
     margin: 0.3em;
 }
 
-.st-item .st-datetime {
+.st-timeline .st-item .st-datetime {
     margin-block-start: 0em;
     margin-block-end: 0.3em;
 }
 
-.st-item .st-title {
+.st-timeline .st-item .st-title {
     font-weight: bold;
     border-bottom: solid 1px $baseColor;
 }
 
-.st-item .st-content {
+.st-timeline .st-item .st-content {
     font-size: 0.9em;
+}
+
+/* ライン位置 */
+.st-timeline .st-item-container {
+    grid-template-columns: $progressContainerWidth 1fr;
+    display: grid;
+}
+.st-timeline.st-right-line .st-item-container {
+    grid-template-columns: 1fr $progressContainerWidth;
+    display: grid;
+}
+.st-timeline.st-center-line .st-item-container {
+    grid-template-columns: 1fr $progressContainerWidth 1fr;
+    display: grid;
+}
+
+/* アイテム配置カラム LEFT(Default) */
+.st-timeline .st-progress-wraper {
+    position: relative;
+    grid-column: 1;
+    grid-row: 1;
+}
+.st-timeline .st-item-wraper {
+    grid-column: 2;
+    grid-row: 1;
+}
+
+/* アイテム配置カラム　CENTER */
+.st-timeline.st-center-line .st-item-wraper {
+    grid-column: 3;
+    grid-row: 1;
+}
+.st-timeline.st-center-line .st-item-wraper.st-right {
+    grid-column: 3;
+    grid-row: 1;
+}
+.st-timeline.st-center-line .st-item-wraper.st-left {
+    grid-column: 1;
+    grid-row: 1;
+}
+.st-timeline.st-center-line .st-progress-wraper {
+    grid-column: 2;
+    grid-row: 1;
+}
+
+/* アイテム配置カラム RIGHT */
+.st-timeline.st-right-line .st-progress-wraper {
+    grid-column: 2;
+    grid-row: 1;
+}
+.st-timeline.st-right-line .st-item-wraper {
+    grid-column: 1;
+    grid-row: 1;
 }
 
 @keyframes st-pulse {
@@ -208,14 +292,40 @@ $subColor: #b9b9b9;
     }
 }
 
-
-
 @media screen and (max-width: 959px) {
     /* タブレット */
-    .st-item {
+    .st-timeline .st-item {
         max-width: 100%;
     }
-}
-@media screen and (max-width: 480px) {
-    /* スマホ用 */
+
+    /* ライン中央の場合のレスポンシブ対応 */
+    .st-timeline.st-center-line .st-item-container {
+        grid-template-columns: 3em 1fr;
+        display: grid;
+    }
+    .st-timeline.st-center-line .st-item-wraper {
+        grid-column: 2;
+        grid-row: 1;
+    }
+    .st-timeline.st-center-line .st-item-wraper.st-right {
+        grid-column: 2;
+        grid-row: 1;
+    }
+    .st-timeline.st-center-line .st-item-wraper.st-left {
+        grid-column: 2;
+        grid-row: 1;
+    }
+
+    .st-timeline.st-center-line .st-progress-wraper {
+        position: relative;
+        grid-column: 1;
+        grid-row: 1;
+    }
+
+    .st-timeline.st-center-line .st-right .st-item:before,
+    .st-timeline.st-center-line .st-left .st-item:before {
+        border-width: 10px 10px 10px 0;
+        right: inherit;
+        left: -10px;
+    }
 }
