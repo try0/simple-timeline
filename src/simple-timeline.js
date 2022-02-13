@@ -35,7 +35,7 @@ export default class SimpleTimeline {
             SimpleTimeline.globalOption = {};
             return;
         }
-        
+
         SimpleTimeline.globalOption = globalOption;
     }
 
@@ -92,10 +92,14 @@ export default class SimpleTimeline {
 
         if (this.option.currentLabel != null) {
             //スタイルルールの追加
-            sheet.insertRule(
-                ".st-timeline .st-item-container.st-current .st-datetime::before { content: '" + this.option.currentLabel + "' !important }",
-                sheet.cssRules.length
-            );
+            const style = " .st-timeline .st-item-container.st-current .st-datetime::before { content: '" + this.option.currentLabel + "' !important }";
+            const tlContainerId = this.container.id;
+            if (tlContainerId) {
+                sheet.insertRule("#" + tlContainerId + style, sheet.cssRules.length);
+                return;
+            }
+
+            sheet.insertRule(style, sheet.cssRules.length);
         }
 
     }
