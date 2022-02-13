@@ -1,9 +1,11 @@
 # simple-timeline
 
-Simple timeline
 
+[Example](https://try0.github.io/simple-timeline/example/index.html)
 
 ![simple-timeline](https://user-images.githubusercontent.com/17096601/153722631-52e8e604-ab30-4383-a99f-073020a0a4cb.gif)
+
+
 
 
 
