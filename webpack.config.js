@@ -4,14 +4,16 @@ const packagejson = require('./package.json');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const ESLintPlugin = require('eslint-webpack-plugin');
 
-module.exports = {
+var config = {
 
     mode: 'production',
     // mode: 'development',
-    entry: './src/simple-timeline.js',
+    entry: {
+        'simple-timeline': './src/simple-timeline.js'
+    },
     output: {
         path: path.resolve(__dirname, 'dist'),
-        filename: 'simple-timeline.js',
+        filename: '[name].js',
         library: 'SimpleTimeline',
         libraryExport: 'default',
         libraryTarget: 'umd',
@@ -27,7 +29,6 @@ module.exports = {
                         loader: 'babel-loader',
                         options: {
                             presets: [
-                                // to ES5
                                 "@babel/preset-env",
                             ],
                         },
@@ -56,10 +57,27 @@ module.exports = {
             exclude: 'node_modules'
         }),
         new MiniCssExtractPlugin({
-            filename: 'simple-timeline.css',
+            filename: '[name].css',
         }),
         new webpack.BannerPlugin({
             banner: `${packagejson.name} v${packagejson.version} | ${packagejson.author.name} | license: ${packagejson.license}`
         })
     ]
 };
+
+module.exports = (env, argv) => {
+    if (argv.mode === 'development') {
+        config.mode = 'development';
+        config.entry = {
+            'simple-timeline': './src/simple-timeline.js'
+        };
+    } else {
+        config.mode = 'production';
+        config.entry = {
+            'simple-timeline.min': './src/simple-timeline.js'
+        };
+    }
+
+    return config;
+};
+

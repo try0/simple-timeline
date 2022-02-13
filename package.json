@@ -36,7 +36,8 @@
     "webpack-fix-style-only-entries": "^0.6.1"
   },
   "scripts": {
-    "build": "webpack",
+    "build": "webpack --mode=production",
+    "debugbuild": "webpack --mode=development",
     "test": "echo \"Error: no test specified\" && exit 1"
   }
 }
