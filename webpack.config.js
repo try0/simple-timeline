@@ -3,6 +3,7 @@ const webpack = require('webpack');
 const packagejson = require('./package.json');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const ESLintPlugin = require('eslint-webpack-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
 
 var config = {
 
@@ -51,6 +52,13 @@ var config = {
     },
     externals: {
     },
+    optimization: {
+        minimize: true,
+        minimizer: [new TerserPlugin({
+            include: /\.min\./,
+            extractComments: false,
+        })],
+    },
     plugins: [
         new ESLintPlugin({
             extensions: ['.ts', '.js'],
@@ -74,8 +82,10 @@ module.exports = (env, argv) => {
     } else {
         config.mode = 'production';
         config.entry = {
+            'simple-timeline': './src/simple-timeline.js',
             'simple-timeline.min': './src/simple-timeline.js'
         };
+
     }
 
     return config;
