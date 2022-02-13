@@ -387,7 +387,7 @@ export default class SimpleTimeline {
     #getItemDate(timelineItem) {
         let itemDate = timelineItem.date;
         if (!(itemDate instanceof Date)) {
-            itemDate = new Date(itemDate);
+            itemDate = new Date(itemDate.replace(/-/g,"/"));
         }
         return itemDate;
     }
