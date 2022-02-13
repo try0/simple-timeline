@@ -22,7 +22,7 @@
 
     <script>
         $(function () {
-            const stl = new SimpleTimeline(document.getElementById("timeline-container-1"), {
+            const stl = new SimpleTimeline(document.getElementById("timeline-container-default"), {
                 option: {
                 },
                 items: [
@@ -64,7 +64,7 @@
             });
 
 
-            const stl2 = new SimpleTimeline(document.getElementById("timeline-container-2"), {
+            const stlprogress = new SimpleTimeline(document.getElementById("timeline-container-progress"), {
                 option: {
                     progress: true,
                     currentLabel: "Current"
@@ -119,7 +119,7 @@
                 ]
             });
 
-            const stl3 = new SimpleTimeline(document.getElementById("timeline-container-3"), {
+            const stl3 = new SimpleTimeline(document.getElementById("timeline-container-custome-style"), {
                 option: {
                 },
                 items: [
@@ -154,6 +154,67 @@
                         }
                     },
 
+                ]
+            });
+
+
+
+            const stlCenter = new SimpleTimeline(document.getElementById("timeline-container-center"), {
+                option: {
+                    linePosition: "center"
+                },
+                items: [
+                    {
+                        date: "2022-01-01",
+                        title: "Right item 1",
+                        content: "Right item 1",
+                        option: {
+                            position: "right"
+                        }
+                    },
+                    {
+                        date: "2022-01-02",
+                        title: "Left item 1",
+                        content: "Left item 1",
+                        option: {
+                            position: "left"
+                        }
+                    },
+                    {
+                        date: "2022-01-03",
+                        title: "Left item 2",
+                        content: "Left item 2",
+                        option: {
+                            position: "left"
+                        }
+                    },
+                    {
+                        date: "2022-01-04",
+                        title: "Right item 2",
+                        content: "Right item 2",
+                        option: {
+                            position: "right"
+                        }
+                    },
+                ]
+            });
+
+
+            const stlRight = new SimpleTimeline(document.getElementById("timeline-container-right"), {
+                option: {
+                    linePosition: "right"
+                },
+                items: [
+                    {
+                        date: "2022-01-01",
+                        title: "Item 1",
+                        content: "Item 1",
+                    },
+                    {
+                        date: "2022-01-02",
+                        title: "Item 2",
+                        content: "Item 2",
+                    },
                 ]
             });
 
@@ -200,7 +261,7 @@
 
             const stlFormatter = new SimpleTimeline(document.getElementById("timeline-container-formatter"), {
                 option: {
-                    dateFormatter: function(date) {
+                    dateFormatter: function (date) {
                         return date.toISOString();
                     }
                 },
@@ -222,6 +283,8 @@
                     }
                 ]
             });
+
+
 
         });
     </script>
@@ -273,6 +336,7 @@
         hr {
             margin: 2em;
         }
+
     </style>
 
     <style>
@@ -307,7 +371,7 @@ option: {
                 </code></pre>
                 </div>
             </div>
-            <div id="timeline-container-1"></div>
+            <div id="timeline-container-default"></div>
             <button id="btn-add-item" class="ui primary button"
                 style="margin: 1em; width: 10em; background-color: #356ce2;">追加</button>
         </div>
@@ -328,7 +392,7 @@ option: {
                 </code></pre>
                 </div>
             </div>
-            <div id="timeline-container-2"></div>
+            <div id="timeline-container-progress"></div>
         </div>
         <hr>
 
@@ -352,6 +416,47 @@ option: {
             <div id="timeline-container-inverted-progress"></div>
         </div>
         <hr>
+
+
+
+
+        <div class="example-item">
+            <div class="code-segment">
+                <h3 class="ui top attached header">
+                    Center line (PC only)
+                </h3>
+                <div class="ui attached segment ">
+                    <pre><code class="javascript">
+option: {
+    linePosition: "center"
+}
+                </code></pre>
+                </div>
+            </div>
+            <div id="timeline-container-center"></div>
+        </div>
+        <hr>
+
+
+
+        <div class="example-item">
+            <div class="code-segment">
+                <h3 class="ui top attached header">
+                    Right line
+                </h3>
+                <div class="ui attached segment ">
+                    <pre><code class="javascript">
+option: {
+    linePosition: "right"
+}
+                </code></pre>
+                </div>
+            </div>
+            <div id="timeline-container-right"></div>
+        </div>
+        <hr>
+
+
 
 
         <div class="example-item">
@@ -401,9 +506,13 @@ new SimpleTimeline(document.getElementById("timeline-container-3"), {
                 </code></pre>
                 </div>
             </div>
-            <div id="timeline-container-3"></div>
+            <div id="timeline-container-custome-style"></div>
         </div>
         <hr>
+
+
+
+
 
 
         <div class="example-item">
@@ -458,7 +567,7 @@ const stlContent = new SimpleTimeline(document.getElementById("timeline-containe
         <hr>
 
 
-        
+
         <div class="example-item">
             <div class="code-segment">
                 <h3 class="ui top attached header">
