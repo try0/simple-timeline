@@ -45,7 +45,17 @@ var config = {
                         loader: 'css-loader',
                         options: { url: false }
                     },
-                    'sass-loader'
+                    'sass-loader',
+                    {
+                        loader: "postcss-loader",
+                        options: {
+                            postcssOptions: {
+                                plugins: [
+                                    require('autoprefixer')({ grid: true })
+                                ],
+                            },
+                        },
+                    },
                 ]
             },
         ]
@@ -82,7 +92,6 @@ module.exports = (env, argv) => {
     } else {
         config.mode = 'production';
         config.entry = {
-            'simple-timeline': './src/simple-timeline.js',
             'simple-timeline.min': './src/simple-timeline.js'
         };
 
