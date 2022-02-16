@@ -148,12 +148,12 @@ $pointSize: 20px;
     margin: 0 auto;
 }
 .st-timeline .st-item-wraper {
-    padding: 0.5em 0;
+    padding: 0.5em;
 }
 .st-timeline .st-item {
     position: relative;
+    width: 100%;
     padding: 0.8em;
-    margin: 0 0.5em;
     background: white;
     border-color: white;
     color: #333333;
@@ -270,6 +270,9 @@ $pointSize: 20px;
     grid-column: 2;
     grid-row: 1;
 }
+.st-timeline.st-center-line .st-item-wraper.st-left .st-item {
+    float: right;
+}
 
 /* アイテム配置カラム RIGHT */
 .st-timeline.st-right-line .st-progress-wraper {
@@ -314,6 +317,9 @@ $pointSize: 20px;
     .st-timeline.st-center-line .st-item-wraper.st-left {
         grid-column: 2;
         grid-row: 1;
+    }
+    .st-timeline.st-center-line .st-item-wraper.st-left .st-item {
+        float: inherit;
     }
 
     .st-timeline.st-center-line .st-progress-wraper {
