@@ -23,6 +23,14 @@
 
     <script>
         $(function () {
+
+            $("#baseColor").on("change", function () {
+                document.documentElement.style.setProperty('--st-base-color', $(this).val());
+            });
+            $("#subColor").on("change", function () {
+                document.documentElement.style.setProperty('--st-sub-color', $(this).val());
+            });
+
             const stl = new SimpleTimeline(document.getElementById("timeline-container-default"), {
                 option: {
                 },
@@ -307,7 +315,7 @@
                 min-height: 100%;
                 padding-left: 2em;
                 padding-right: 2em;
-                padding-bottom: 20em;
+                padding-bottom: 10em;
                 margin: 0 auto;
                 background: rgb(230, 230, 230);
             }
@@ -319,12 +327,15 @@
             .container {
                 width: 100%;
                 min-height: 100%;
-                padding-bottom: 20em;
+                padding-bottom: 10em;
                 margin: 0 auto;
                 background: rgb(230, 230, 230);
             }
         }
 
+        .st-timeline {
+            margin: 0.5em;
+        }
 
         .code-segment {
             margin: .6em;
@@ -338,6 +349,9 @@
             margin: 2em;
         }
 
+        input[type=color] {
+            width: 3em !important;
+        }
     </style>
 
     <style>
@@ -359,7 +373,18 @@
 
     <main class="container">
 
-        <div style="padding-top: 4em;"></div>
+        <div style="padding-top: 5em;"></div>
+
+        <div class="ui form" style="margin: 0.5em;">
+            <div class="inline fields">
+                <div class="field">
+                    <label>--st-base-color</label><input id="baseColor" type="color" value="#356ce2">
+                </div>
+                <div class="field">
+                    <label>--st-sub-color</label><input id="subColor" type="color" value="#b9b9b9">
+                </div>
+            </div>
+        </div>
         <div class="example-item">
             <div class="code-segment">
                 <h3 class="ui top attached header">
@@ -587,8 +612,17 @@ option: {
             <div id="timeline-container-formatter"></div>
         </div>
         <hr>
-
+        <div style="color: gray; float: right; padding: 0.5em;">
+            <span>The libraries used to create the example.</span>
+            <ul>
+                <li><a href="https://jquery.com/">JQuery</a> | MIT License</li>
+                <li><a href="https://fomantic-ui.com/">Fomantic-UI</a> | MIT License</li>
+                <li><a href="https://highlightjs.org/">highlight.js</a> | BSD 3-Clause License</li>
+            </ul>
+        </div>
     </main>
+
+
 </body>
 
 </html>
