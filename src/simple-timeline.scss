@@ -36,6 +36,8 @@ $pointSize: 20px;
     border-radius: 50%;
     content: "";
     background: $baseColor;
+    background: var(--st-base-color, $baseColor);
+
 }
 
 /* Timeline point */
@@ -43,11 +45,13 @@ $pointSize: 20px;
 .st-timeline .st-item-container .st-point {
     @extend %st-point;
     background: $subColor;
+    background: var(--st-sub-color, $subColor);
 }
 
 .st-timeline .st-item-container.st-current .st-point {
     @extend %st-point;
     background: $baseColor;
+    background: var(--st-base-color, $baseColor);
 }
 
 .st-timeline .st-item-container.st-current .st-point::after {
@@ -62,6 +66,7 @@ $pointSize: 20px;
 .st-timeline .st-item-container.st-passed .st-point {
     @extend %st-point;
     background-color: $baseColor;
+    background-color: var(--st-base-color, $baseColor);
 }
 
 /* Line */
@@ -69,32 +74,38 @@ $pointSize: 20px;
 .st-timeline .st-item-container .st-line {
     @extend %st-line;
     background: $subColor;
+    background: var(--st-sub-color, $subColor);
 }
 
 .st-timeline .st-item-container.st-current .st-line {
     @extend %st-line;
     background: linear-gradient(180deg, $baseColor 0%, $baseColor 2em, $subColor 2em, $subColor 100%);
+    background: linear-gradient(180deg, var(--st-base-color, $baseColor) 0%, var(--st-base-color, $baseColor) 2em, var(--st-sub-color, $subColor) 2em, var(--st-sub-color, $subColor) 100%);
 }
 
 .st-timeline .st-item-container.st-passed-last .st-line {
     @extend %st-line;
     background: linear-gradient(180deg, $baseColor 0%, $baseColor 20%, $subColor 60%, $subColor 100%);
+    background: linear-gradient(180deg, var(--st-base-color, $baseColor) 0%, var(--st-base-color, $baseColor) 20%, var(--st-sub-color, $subColor) 60%, var(--st-sub-color, $subColor) 100%);
 }
 
 .st-timeline .st-item-container.st-passed .st-line {
     @extend %st-line;
     background-color: $baseColor;
+    background-color: var(--st-base-color, $baseColor);
 }
 
 /* non progress */
 .st-timeline.st-no-progress .st-item-container .st-line {
     @extend %st-line;
     background: $baseColor !important;
+    background: var(--st-base-color, $baseColor) !important;
 }
 
 .st-timeline.st-no-progress .st-item-container .st-point {
     @extend %st-point;
     background: $baseColor !important;
+    background: var(--st-base-color, $baseColor) !important;
 }
 
 /* inverted progress */
@@ -102,42 +113,50 @@ $pointSize: 20px;
 .st-timeline.st-inverted-progress .st-item-container .st-point {
     @extend %st-point;
     background: $baseColor;
+    background: var(--st-base-color, $baseColor);
 }
 
 .st-timeline.st-inverted-progress .st-item-container.st-passed .st-point {
     @extend %st-point;
     background-color: $subColor;
+    background-color: var(--st-sub-color, $subColor);
 }
 
 .st-timeline.st-inverted-progress .st-item-container .st-line {
     @extend %st-line;
     background: $baseColor;
+    background: var(--st-base-color, $baseColor);
 }
 
 .st-timeline.st-inverted-progress .st-item-container.st-current .st-line {
     @extend %st-line;
     background: linear-gradient(180deg, $subColor 0%, $subColor 2em, $baseColor 2em, $baseColor 100%);
+    background: linear-gradient(180deg, var(--st-sub-color, $subColor) 0%, var(--st-sub-color, $subColor) 2em, var(--st-base-color, $baseColor) 2em, var(--st-base-color, $baseColor) 100%);
 }
 
 .st-timeline.st-inverted-progress .st-item-container.st-passed-last .st-line {
     @extend %st-line;
     background: linear-gradient(180deg, $subColor 0%, $subColor 20%, $baseColor 60%, $baseColor 100%);
+    background: linear-gradient(180deg, var(--st-sub-color, $subColor) 0%, var(--st-sub-color, $subColor) 20%, var(--st-base-color, $baseColor) 60%, var(--st-base-color, $baseColor) 100%);
 }
 
 .st-timeline.st-inverted-progress .st-item-container.st-passed .st-line {
     @extend %st-line;
     background-color: $subColor;
+    background-color: var(--st-sub-color, $subColor);
 }
 
 /* header */
 .st-timeline .st-header {
-    background: #356ce2;
+    background: $baseColor;
+    background: var(--st-base-color, $baseColor);
     color: white;
     padding: 0 0.5em;
 }
 
 .st-timeline .st-footer {
-    background: #356ce2;
+    background: $baseColor;
+    background: var(--st-base-color, $baseColor);
     color: white;
     padding: 0 0.5em;
 }
@@ -208,6 +227,7 @@ $pointSize: 20px;
     content: "Today";
     color: white;
     background: $baseColor;
+    background: var(--st-base-color, $baseColor);
     border-radius: 5px;
     padding-left: 0.5em;
     padding-right: 0.5em;
@@ -222,6 +242,7 @@ $pointSize: 20px;
 .st-timeline .st-item .st-title {
     font-weight: bold;
     border-bottom: solid 1px $baseColor;
+    border-bottom: solid 1px var(--st-base-color, $baseColor);
 }
 
 .st-timeline .st-item .st-content {
