@@ -37,25 +37,14 @@
                 items: [
                     {
                         date: "2022-01-01",
-                        title: "更新予定のお知らせを配信",
-                        content: "アップデートの公開予定を通知します。",
+                        title: "Item 1 title",
+                        content: "Item 1 content",
                     },
                     {
-                        date: "2022-01-10",
-                        title: "アップデートの公開作業実施",
-                        content: "ストアへの公開作業を行います。<br>13時以降に、更新手順を参考に操作してください。<br>お手元の端末でアップデートできるようになるまで、最大で1日ほどかかる可能性があります。",
+                        date: "2022-01-02",
+                        title: "Item 2 title",
+                        content: "Item 2 content",
                     },
-                    {
-                        date: "2022-01-12 00:00",
-                        title: "アップデートが表示されない場合、お問い合わせください",
-                        content: "公開作業実施から24時間が経過しています。お手元の端末上のストアでアップデートを確認できない場合、お問い合わせください。" +
-                            "<br>※OSが未対応バージョンの可能性があります。対応バージョンをご確認の上、お問い合わせください。",
-                    },
-                    {
-                        date: "2999-01-01 00:00",
-                        title: "ダミースケジュール",
-                        content: "ダミースケジュール",
-                    }
                 ]
             });
 
@@ -71,7 +60,6 @@
 
                 count += 1;
             });
-
 
             const stlprogress = new SimpleTimeline(document.getElementById("timeline-container-progress"), {
                 option: {
@@ -127,6 +115,71 @@
                     },
                 ]
             });
+
+
+            var now = new Date();
+            var day = 60 * 60 * 24 * 1000;
+            var dayitems = [];
+            for (var i = -2; i < 3; i++) {
+                var item = {
+                    "date": new Date(now.getTime() + (i * day)),
+                    "title": "Item " + i,
+                    "content": "Item " + i
+                };
+
+                dayitems.push(item);
+            }
+
+            const stlAutoProgress = new SimpleTimeline(document.getElementById("timeline-container-auto-progress-day"), {
+                option: {
+                    progress: true,
+                    autoProgress: true,
+                    currentLabel: "今日"
+                },
+                items: dayitems
+            });
+
+
+
+
+            var hour = 60 * 60 * 1000;
+            var houritems = [];
+            for (var i = -2; i < 3; i++) {
+                var item = {
+                    "date": new Date(now.getTime() + (i * hour)),
+                    "title": "Item " + i,
+                    "content": "Item " + i
+                };
+
+                houritems.push(item);
+            }
+
+            const stlAutoProgressH = new SimpleTimeline(document.getElementById("timeline-container-auto-progress-hour"), {
+                option: {
+                    progress: true,
+                    autoProgress: true,
+                    currentLabel: "現在時刻",
+                    dateFormatter: function (date) {
+                        return date.toLocaleString();
+                    },
+                    itemStateFactory: function (item, renderDate) {
+
+                        const isCurrent = item.date.getFullYear() === renderDate.getFullYear() &&
+                            item.date.getMonth() === renderDate.getMonth() &&
+                            item.date.getDate() === renderDate.getDate() &&
+                            item.date.getHours() === renderDate.getHours();
+
+                        if (isCurrent) {
+                            return "current";
+                        } else if (renderDate.getTime() > item.date.getTime()) {
+                            return "passed";
+                        }
+                        return "schedule";
+                    }
+                },
+                items: houritems
+            });
+
 
             const stl3 = new SimpleTimeline(document.getElementById("timeline-container-custome-style"), {
                 option: {
@@ -440,6 +493,80 @@ option: {
                 </div>
             </div>
             <div id="timeline-container-inverted-progress"></div>
+        </div>
+        <hr>
+
+
+
+        <div class="example-item">
+            <div class="code-segment">
+                <h3 class="ui top attached header">
+                    Auto progress
+                </h3>
+                <div class="ui attached segment ">
+                    <pre><code class="javascript">
+var now = new Date();
+var day = 60 * 60 * 24 * 1000;
+var items = [];
+for (var i = -2; i &lt; 3; i++) {
+    var item = {
+        "date": new Date(now.getTime() + (i * day)),
+        "title": "Item " + i,
+        "content": "Item " + i
+    };
+
+    items.push(item);
+}
+
+const stlAutoProgress = new SimpleTimeline(document.getElementById("timeline-container"), {
+    option: {
+        progress: true,
+        autoProgress: true,
+        currentLabel: "今日"
+    },
+    items: items
+});
+                </code></pre>
+                </div>
+            </div>
+            <div id="timeline-container-auto-progress-day"></div>
+        </div>
+        <hr>
+
+
+
+        <div class="example-item">
+            <div class="code-segment">
+                <h3 class="ui top attached header">
+                    Auto progress
+                </h3>
+                <div class="ui attached segment ">
+                    <pre><code class="javascript">
+option: {
+    progress: true,
+    autoProgress: true,
+    currentLabel: "現在時刻",
+    dateFormatter: function (date) {
+        return date.toLocaleString();
+    },
+    itemStateFactory: function (item, renderDate) {
+        const isCurrent = item.date.getFullYear() === renderDate.getFullYear() &&
+            item.date.getMonth() === renderDate.getMonth() &&
+            item.date.getDate() === renderDate.getDate() &&
+            item.date.getHours() === renderDate.getHours();
+
+        if (isCurrent) {
+            return "current";
+        } else if (renderDate.getTime() > item.date.getTime()) {
+            return "passed";
+        }
+        return "schedule";
+    }
+}
+                </code></pre>
+                </div>
+            </div>
+            <div id="timeline-container-auto-progress-hour"></div>
         </div>
         <hr>
 
