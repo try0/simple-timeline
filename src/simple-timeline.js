@@ -373,6 +373,11 @@ export default class SimpleTimeline {
             beforeItem = createdItem["refElm"];
         }
 
+        if (!items.includes(timelineItem)) {
+            this.timeline.appendChild(itemContainerElm);
+            items.push(timelineItem);
+        }
+
     }
 
 
