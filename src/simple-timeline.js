@@ -16,11 +16,28 @@ export default class SimpleTimeline {
         progressInverted: false,
         // Set the state of a timeline item by comparing its date with the current date.
         autoProgress: false,
-        dateFormatter: (date) => date.toLocaleDateString(),
         // Label to display when the item's date is the same as the current date.
         currentLabel: null,
         header: null,
-        footer: null
+        footer: null,
+
+        dateFormatter: (date) => (date == null ? "" : date.toLocaleDateString()),
+        itemStateFactory: (item, renderDate = null) => {
+            if (!item) {
+                return "";
+            }
+
+            const itemDate = SimpleTimeline.getItemDate(item);
+            const isSameDay = SimpleTimeline.isSameDay(itemDate, renderDate != null ? renderDate : new Date());
+
+            if (isSameDay) {
+                return "current";
+            } else if (itemDate.getTime() < renderDate.getTime()) {
+                return "passed"
+            }
+             
+            return "schedule";
+        },
     };
 
     static defaultItemOption = {
@@ -32,6 +49,7 @@ export default class SimpleTimeline {
 
     static globalOption = {};
 
+
     static setGlobalOption(globalOption) {
         if (!globalOption) {
             SimpleTimeline.globalOption = {};
@@ -40,6 +58,25 @@ export default class SimpleTimeline {
 
         SimpleTimeline.globalOption = globalOption;
     }
+
+    static isSameDay(d1, d2) {
+        return d1.getFullYear() === d2.getFullYear() &&
+            d1.getMonth() === d2.getMonth() &&
+            d1.getDate() === d2.getDate();
+    }
+
+    static isSameDayHour(d1, d2) {
+        return SimpleTimeline.isSameDay(d1, d2) && d1.getHours() === d2.getHours();
+    }
+
+    static getItemDate(timelineItem) {
+        let itemDate = timelineItem.date;
+        if (!(itemDate instanceof Date)) {
+            itemDate = new Date(itemDate.replace(/-/g, "/"));
+        }
+        return itemDate;
+    }
+
 
 
     /**
@@ -169,7 +206,8 @@ export default class SimpleTimeline {
 
         for (var i = 0; i < items.length; i++) {
             const timelineItem = items[i];
-            this.#appendItem(timelineItem, currentDate);
+            timelineItem["renderDate"] = currentDate;
+            this.#appendItem(timelineItem);
         }
 
         // render footer
@@ -187,36 +225,14 @@ export default class SimpleTimeline {
         }
     }
 
-    createItemContainer(timelineItem, currentDate = null) {
-        const itemDate = this.#getItemDate(timelineItem);
+    createItemContainer(timelineItem) {
+        const itemDate = SimpleTimeline.getItemDate(timelineItem);
         const itemOption = this.#getItemOption(timelineItem);
 
 
         const itemContainerElm = document.createElement("div");
         itemContainerElm.className = "st-item-container";
         itemContainerElm.setAttribute("data-st-date", itemDate.toISOString());
-
-        // 状態
-        if (this.option.autoProgress && currentDate != null) {
-            if (itemDate.getTime() < currentDate.getTime()) {
-                itemContainerElm.classList.add("st-passed");
-            }
-            if (this.isSameDay(itemDate, currentDate)) {
-                itemContainerElm.classList.add("st-current");
-            }
-
-        } else {
-
-            if ("passed" == timelineItem.state) {
-                itemContainerElm.classList.add("st-passed");
-            }
-
-            if ("current" == timelineItem.state) {
-                itemContainerElm.classList.add("st-current");
-            }
-        }
-
-
 
 
         const progressWraper = document.createElement("div");
@@ -263,6 +279,25 @@ export default class SimpleTimeline {
         }
 
 
+
+        // 状態
+        let itemState = "";
+        if (this.option.autoProgress) {
+            itemState = this.option.itemStateFactory(timelineItem, timelineItem["renderDate"]);
+        } else {
+            itemState = timelineItem.state;
+        }
+
+
+        if ("passed" == itemState) {
+            itemContainerElm.classList.add("st-passed");
+        }
+        else if ("current" == itemState) {
+            itemContainerElm.classList.add("st-current");
+        }
+        else {
+            itemContainerElm.classList.add("st-schedule");
+        }
 
         const datetimeElm = document.createElement("p");
 
@@ -315,14 +350,14 @@ export default class SimpleTimeline {
 
     insertItem(timelineItem) {
         const itemContainerElm = this.createItemContainer(timelineItem);
-        const itemDate = this.#getItemDate(timelineItem);
+        const itemDate = SimpleTimeline.getItemDate(timelineItem);
 
         const items = this.getItems();
 
         var beforeItem = null;
         for (var i = 0; i < items.length; i++) {
             const createdItem = items[i];
-            const createdItemDate = this.#getItemDate(createdItem);
+            const createdItemDate = SimpleTimeline.getItemDate(createdItem);
 
             if (createdItemDate > itemDate) {
                 if (beforeItem == null) {
@@ -375,11 +410,6 @@ export default class SimpleTimeline {
         this.option = this.#getMergeOption(option);
     }
 
-    isSameDay(d1, d2) {
-        return d1.getFullYear() === d2.getFullYear() &&
-            d1.getMonth() === d2.getMonth() &&
-            d1.getDate() === d2.getDate();
-    }
 
 
 
@@ -419,13 +449,6 @@ export default class SimpleTimeline {
         return "" == obj[propName];
     }
 
-    #getItemDate(timelineItem) {
-        let itemDate = timelineItem.date;
-        if (!(itemDate instanceof Date)) {
-            itemDate = new Date(itemDate.replace(/-/g, "/"));
-        }
-        return itemDate;
-    }
 
     #getMergeOption(priorityOpition) {
         let merged = {};
@@ -437,7 +460,7 @@ export default class SimpleTimeline {
 
     #sortItemsOrderByDate(timelineItems) {
         if (timelineItems) {
-            timelineItems.sort((i1, i2) => (this.#getItemDate(i1) > this.#getItemDate(i2) ? 1 : -1));
+            timelineItems.sort((i1, i2) => (SimpleTimeline.getItemDate(i1) > SimpleTimeline.getItemDate(i2) ? 1 : -1));
         }
         return timelineItems;
     }
