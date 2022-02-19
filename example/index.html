@@ -31,6 +31,23 @@
                 document.documentElement.style.setProperty('--st-sub-color', $(this).val());
             });
 
+            const stlTemplate = new SimpleTimeline(document.getElementById("timeline-container-template"), {
+                option: {
+                },
+                items: [
+                    {
+                        date: "2022-01-01",
+                        title: "Item 1 title",
+                        content: "Item 1 content",
+                    },
+                    {
+                        date: "2022-01-02",
+                        title: "Item 2 title",
+                        content: "Item 2 content",
+                    },
+                ]
+            });
+
             const stl = new SimpleTimeline(document.getElementById("timeline-container-default"), {
                 option: {
                 },
@@ -438,6 +455,10 @@
                 </div>
             </div>
         </div>
+
+
+
+
         <div class="example-item">
             <div class="code-segment">
                 <h3 class="ui top attached header">
@@ -665,6 +686,43 @@ new SimpleTimeline(document.getElementById("timeline-container-3"), {
 
 
 
+        
+        <div class="example-item">
+            <div class="code-segment">
+                <h3 class="ui top attached header">
+                    Item template
+                </h3>
+                <div class="ui attached segment ">
+                    <pre><code class="html">
+&lt;template&gt;
+    &lt;!-- Fomantic-UI card --&gt;
+    &lt;div class=&quot;ui red card&quot;&gt;
+        &lt;div class=&quot;content&quot;&gt;
+            &lt;span data-st-title class=&quot;header&quot;&gt;Item title&lt;/span&gt;
+            &lt;span data-st-datetime class=&quot;meta&quot;&gt;Item date&lt;/span&gt;
+            &lt;div data-st-content class=&quot;description&quot;&gt;Item content&lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/template&gt;
+                </code></pre>
+                </div>
+            </div>
+            <div id="timeline-container-template">
+                <template>
+                    <!-- Fomantic-UI card -->
+                    <div class="ui red card">
+                        <div class="content">
+                            <span data-st-title class="header">Item title</span>
+                            <span data-st-datetime class="meta">Item date</span>
+                            <div data-st-content class="description">Item content</div>
+                        </div>
+                    </div>
+                </template>
+            </div>
+        </div>
+        <hr>
+
+
 
 
 
@@ -739,6 +797,10 @@ option: {
             <div id="timeline-container-formatter"></div>
         </div>
         <hr>
+
+
+
+
         <div style="color: gray; float: right; padding: 0.5em;">
             <span>The libraries used to create the example.</span>
             <ul>
