@@ -35,7 +35,7 @@ export default class SimpleTimeline {
             } else if (itemDate.getTime() < renderDate.getTime()) {
                 return "passed"
             }
-             
+
             return "schedule";
         },
     };
@@ -90,6 +90,11 @@ export default class SimpleTimeline {
     timeline;
 
     /**
+     * Timeline item template element
+     */
+    itemTemplate;
+
+    /**
      * Timeline option object
      */
     option = {};
@@ -119,6 +124,11 @@ export default class SimpleTimeline {
         }
 
         this.option = this.#getMergeOption(this.option);
+
+        if ('content' in document.createElement('template')) {
+            const itemTemplates = this.container.getElementsByTagName("template");
+            this.itemTemplate = (itemTemplates && itemTemplates.length > 0) ? itemTemplates[0] : null;
+        }
 
         this.initializeStyleSheet();
         this.renderTimeline();
@@ -153,25 +163,25 @@ export default class SimpleTimeline {
         }
 
         this.timeline = document.createElement("div");
-        this.timeline.className = "st-timeline";
+        this.#addClassName(this.timeline, "st-timeline")
 
         switch (this.option.linePosition) {
             case 'right':
-                this.timeline.classList.add("st-right-line");
+                this.#addClassName(this.timeline, "st-right-line");
                 break;
             case 'center':
-                this.timeline.classList.add("st-center-line");
+                this.#addClassName(this.timeline, "st-center-line");
                 break;
             default:
-                this.timeline.classList.add("st-left-line");
+                this.#addClassName(this.timeline, "st-left-line");
         }
 
         if (!this.option.progress) {
-            this.timeline.classList.add("st-no-progress");
+            this.#addClassName(this.timeline, "st-no-progress");
         }
 
         if (this.option.progressInverted) {
-            this.timeline.classList.add("st-inverted-progress");
+            this.#addClassName(this.timeline, "st-inverted-progress");
         }
 
         this.container.appendChild(this.timeline);
@@ -187,10 +197,10 @@ export default class SimpleTimeline {
         // render header
         if (this.option.header) {
             const headerContainer = document.createElement("div");
-            headerContainer.className = "st-header-container";
+            this.#addClassName(headerContainer, "st-header-container");
 
             const header = document.createElement("span");
-            header.className = "st-header";
+            this.#addClassName(header, "st-header");
             header.innerHTML = this.option.header.label;
 
             headerContainer.appendChild(header);
@@ -213,10 +223,10 @@ export default class SimpleTimeline {
         // render footer
         if (this.option.footer) {
             const footerContainer = document.createElement("div");
-            footerContainer.className = "st-footer-container";
+            this.#addClassName(footerContainer, "st-footer-container");
 
             const footer = document.createElement("span");
-            footer.className = "st-footer";
+            this.#addClassName(footer, "st-footer");
             footer.innerHTML = this.option.footer.label;
 
             footerContainer.appendChild(footer);
@@ -231,54 +241,34 @@ export default class SimpleTimeline {
 
 
         const itemContainerElm = document.createElement("div");
-        itemContainerElm.className = "st-item-container";
+        this.#addClassName(itemContainerElm, "st-item-container");
         itemContainerElm.setAttribute("data-st-date", itemDate.toISOString());
 
 
         const progressWraper = document.createElement("div");
-        progressWraper.className = "st-progress-wraper";
+        this.#addClassName(progressWraper, "st-progress-wraper");
         itemContainerElm.appendChild(progressWraper);
 
         const lineElm = document.createElement("div");
-        lineElm.className = "st-line";
+        this.#addClassName(lineElm, "st-line");
         progressWraper.appendChild(lineElm);
 
         const linePointElm = document.createElement("div");
-        linePointElm.className = "st-point ";
+        this.#addClassName(linePointElm, "st-point");
         progressWraper.appendChild(linePointElm);
 
 
 
         const itemWraperElm = document.createElement("div");
-        itemWraperElm.className = "st-item-wraper";
+        this.#addClassName(itemWraperElm, "st-item-wraper");
 
         if (this.option.linePosition == "center") {
             if (itemOption.position == "left") {
-                itemWraperElm.classList.add("st-left");
+                this.#addClassName(itemWraperElm, "st-left");
             } else {
-                itemWraperElm.classList.add("st-right");
+                this.#addClassName(itemWraperElm, "st-right");
             }
         }
-
-
-
-        const itemElm = document.createElement("div");
-        itemElm.className = "st-item";
-        itemWraperElm.appendChild(itemElm);
-
-
-        if (itemOption.backgroundColor != null) {
-            itemElm.style.background = itemOption.backgroundColor;
-            itemElm.style.borderColor = itemOption.backgroundColor;
-        }
-        if (itemOption.borderColor != null) {
-            itemElm.style.border = "solid 2px " + itemOption.borderColor;
-        }
-        if (itemOption.fontColor != null) {
-            itemElm.style.color = itemOption.fontColor;
-        }
-
-
 
         // 状態
         let itemState = "";
@@ -288,44 +278,94 @@ export default class SimpleTimeline {
             itemState = timelineItem.state;
         }
 
-
         if ("passed" == itemState) {
-            itemContainerElm.classList.add("st-passed");
-        }
-        else if ("current" == itemState) {
-            itemContainerElm.classList.add("st-current");
-        }
-        else {
-            itemContainerElm.classList.add("st-schedule");
+            this.#addClassName(itemContainerElm, "st-passed");
+        } else if ("current" == itemState) {
+            this.#addClassName(itemContainerElm, "st-current");
+        } else {
+            this.#addClassName(itemContainerElm, "st-schedule");
         }
 
-        const datetimeElm = document.createElement("p");
-
-        const dateFormatter = this.option.dateFormatter ?? this.defaultDateFormatter;
-        datetimeElm.innerHTML = dateFormatter(itemDate);
-        datetimeElm.className = "st-datetime";
 
 
-        const titleElm = document.createElement("p");
-        const isEmptyTitle = this.#isEmpty(timelineItem, "title");
-        titleElm.innerHTML = isEmptyTitle ? "" : timelineItem.title;
-        titleElm.className = "st-title";
 
-        if (itemOption.borderColor != null) {
-            titleElm.style.borderColor = itemOption.borderColor;
+        if (this.itemTemplate) {
+            const itemElm = this.itemTemplate.content.cloneNode(true);
+            this.#addClassName(itemElm, "st-item");
+
+            // 日時
+            const datetimeElm = itemElm.querySelector("[data-st-datetime]");
+            if (datetimeElm) {
+                const dateFormatter = this.option.dateFormatter ?? this.defaultDateFormatter;
+                datetimeElm.innerHTML = dateFormatter(itemDate);
+                // this.#addClassName(datetimeElm, "st-datetime");
+            }
+
+            // タイトル
+            const titleElm = itemElm.querySelector("[data-st-title]");
+            if (titleElm) {
+                const isEmptyTitle = this.#isEmpty(timelineItem, "title");
+                titleElm.innerHTML = isEmptyTitle ? "" : timelineItem.title;
+                // this.#addClassName(titleElm, "st-title");
+            }
+
+            // 内容
+            const contentElm = itemElm.querySelector("[data-st-content]");
+            if (contentElm) {
+                const isEmptyContent = this.#isEmpty(timelineItem, "content");
+                contentElm.innerHTML = isEmptyContent ? "" : timelineItem.content;
+                // this.#addClassName(contentElm, "st-content");
+            }
+
+            itemWraperElm.appendChild(itemElm);
+        } else {
+            const itemElm = document.createElement("div");
+            this.#addClassName(itemElm, "st-item");
+
+            if (itemOption.backgroundColor != null) {
+                itemElm.style.background = itemOption.backgroundColor;
+                itemElm.style.borderColor = itemOption.backgroundColor;
+            }
+            if (itemOption.borderColor != null) {
+                itemElm.style.border = "solid 2px " + itemOption.borderColor;
+            }
+            if (itemOption.fontColor != null) {
+                itemElm.style.color = itemOption.fontColor;
+            }
+
+
+            // 日時
+            const datetimeElm = document.createElement("p");
+            const dateFormatter = this.option.dateFormatter ?? this.defaultDateFormatter;
+            datetimeElm.innerHTML = dateFormatter(itemDate);
+            this.#addClassName(datetimeElm, "st-datetime");
+
+            // タイトル
+            const titleElm = document.createElement("p");
+            const isEmptyTitle = this.#isEmpty(timelineItem, "title");
+            titleElm.innerHTML = isEmptyTitle ? "" : timelineItem.title;
+            this.#addClassName(titleElm, "st-title");
+
+            if (itemOption.borderColor != null) {
+                titleElm.style.borderColor = itemOption.borderColor;
+            }
+
+            // 内容
+            const contentElm = document.createElement("div");
+            const isEmptyContent = this.#isEmpty(timelineItem, "content");
+            contentElm.innerHTML = isEmptyContent ? "" : timelineItem.content;
+            this.#addClassName(contentElm, "st-content");
+
+            itemElm.appendChild(datetimeElm);
+
+            if (!isEmptyTitle || !isEmptyContent) {
+                itemElm.appendChild(titleElm);
+                itemElm.appendChild(contentElm);
+            }
+
+            itemWraperElm.appendChild(itemElm);
         }
 
-        const contentElm = document.createElement("div");
-        const isEmptyContent = this.#isEmpty(timelineItem, "content");
-        contentElm.innerHTML = isEmptyContent ? "" : timelineItem.content;
-        contentElm.className = "st-content"
-
-        itemElm.appendChild(datetimeElm);
-
-        if (!isEmptyTitle || !isEmptyContent) {
-            itemElm.appendChild(titleElm);
-            itemElm.appendChild(contentElm);
-        }
 
         itemContainerElm.appendChild(itemWraperElm);
 
@@ -470,4 +510,15 @@ export default class SimpleTimeline {
         return timelineItems;
     }
 
+    #addClassName(element, className) {
+        if (element) {
+
+            if (element.classList) {
+                element.classList.add(className);
+            } else {
+                element.className = "className";
+            }
+
+        }
+    }
 }
