@@ -363,6 +363,30 @@
                 ]
             });
 
+            
+
+            const stlComparator = new SimpleTimeline(document.getElementById("timeline-container-comparator"), {
+                option: {
+                    itemComparator: SimpleTimeline.itemDateDescComparator
+                },
+                items: [
+                    {
+                        date: "2022-01-01",
+                        title: "Item 1",
+                        content: "Item 1"
+                    },
+                    {
+                        date: "2022-01-02",
+                        title: "Item 2",
+                        content: "Item 2"
+                    },
+                    {
+                        date: "2022-01-03",
+                        title: "Item 3",
+                        content: "Item 3"
+                    }
+                ]
+            });
 
 
         });
@@ -799,6 +823,27 @@ option: {
             <div id="timeline-container-formatter"></div>
         </div>
         <hr>
+
+
+
+
+        <div class="example-item">
+            <div class="code-segment">
+                <h3 class="ui top attached header">
+                    Item comparator
+                </h3>
+                <div class="ui attached segment ">
+                    <pre><code class="javascript">
+option: {
+    itemComparator: SimpleTimeline.itemDateDescComparator
+}
+                </code></pre>
+                </div>
+            </div>
+            <div id="timeline-container-comparator"></div>
+        </div>
+        <hr>
+
 
 
 
