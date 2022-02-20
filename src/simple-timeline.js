@@ -7,6 +7,24 @@ import "./simple-timeline.scss"
  */
 export default class SimpleTimeline {
 
+    /**
+     * 日付昇順（デフォルト）
+     * @param {*} i1 
+     * @param {*} i2 
+     * @returns 
+     */
+    static itemDateAscComparator = (i1, i2) => (SimpleTimeline.getItemDate(i1) > SimpleTimeline.getItemDate(i2) ? 1 : -1);
+    /**
+     * 日付降順
+     * @param {}} i1 
+     * @param {*} i2 
+     * @returns 
+     */
+    static itemDateDescComparator = (i1, i2) => SimpleTimeline.itemDateAscComparator(i1, i2) * -1;
+
+    /**
+     * デフォルトオプション
+     */
     static defaultOption = {
         debug: false,
         linePosition: "left",
@@ -38,6 +56,7 @@ export default class SimpleTimeline {
 
             return "schedule";
         },
+        itemComparator: SimpleTimeline.itemDateAscComparator,
     };
 
     static defaultItemOption = {
@@ -212,7 +231,9 @@ export default class SimpleTimeline {
         const currentDate = this.option.autoProgress ? new Date() : null;
         const items = this.getItems();
 
-        this.#sortItemsOrderByDate(items);
+        if (items) {
+            items.sort(this.option.itemComparator);
+        }
 
         for (var i = 0; i < items.length; i++) {
             const timelineItem = items[i];
@@ -374,20 +395,6 @@ export default class SimpleTimeline {
         return itemContainerElm;
     }
 
-    /**
-     * Appends timeline item
-     * 
-     * @param {*} timelineItem 
-     * @returns 
-     */
-    #appendItem(timelineItem, currentDate = null) {
-
-        const itemContainerElm = this.createItemContainer(timelineItem, currentDate);
-        this.timeline.appendChild(itemContainerElm);
-
-        return itemContainerElm;
-    }
-
     insertItem(timelineItem) {
         const itemContainerElm = this.createItemContainer(timelineItem);
         const itemDate = SimpleTimeline.getItemDate(timelineItem);
@@ -455,7 +462,19 @@ export default class SimpleTimeline {
         this.option = this.#getMergeOption(option);
     }
 
+    /**
+     * Appends timeline item
+     * 
+     * @param {*} timelineItem 
+     * @returns 
+     */
+     #appendItem(timelineItem, currentDate = null) {
 
+        const itemContainerElm = this.createItemContainer(timelineItem, currentDate);
+        this.timeline.appendChild(itemContainerElm);
+
+        return itemContainerElm;
+    }
 
 
     #getItemOption(timelineItem) {
@@ -501,13 +520,6 @@ export default class SimpleTimeline {
         merged = Object.assign(merged, SimpleTimeline.globalOption);
         merged = Object.assign(merged, priorityOpition);
         return merged;
-    }
-
-    #sortItemsOrderByDate(timelineItems) {
-        if (timelineItems) {
-            timelineItems.sort((i1, i2) => (SimpleTimeline.getItemDate(i1) > SimpleTimeline.getItemDate(i2) ? 1 : -1));
-        }
-        return timelineItems;
     }
 
     #addClassName(element, className) {
