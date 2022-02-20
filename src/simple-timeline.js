@@ -51,7 +51,7 @@ export default class SimpleTimeline {
             if (isSameDay) {
                 return "current";
             } else if (itemDate.getTime() < renderDate.getTime()) {
-                return "passed"
+                return "passed";
             }
 
             return "schedule";
