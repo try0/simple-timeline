@@ -10,7 +10,8 @@ var config = {
     mode: 'production',
     // mode: 'development',
     entry: {
-        'simple-timeline': './src/simple-timeline.js'
+        'simple-timeline': './src/simple-timeline.js',
+        'simple-timeline.css': './src/simple-timeline.scss'
     },
     output: {
         path: path.resolve(__dirname, 'dist'),
@@ -28,11 +29,6 @@ var config = {
                 use: [
                     {
                         loader: 'babel-loader',
-                        options: {
-                            presets: [
-                                "@babel/preset-env",
-                            ],
-                        },
                     }
                 ],
             },
