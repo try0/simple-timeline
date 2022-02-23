@@ -64,7 +64,7 @@ export default class SimpleTimeline {
         backgroundColor: null,
         borderColor: null,
         fontColor: null,
-    }
+    };
 
     static globalOption = {};
 
@@ -397,34 +397,42 @@ export default class SimpleTimeline {
 
     insertItem(timelineItem) {
         const itemContainerElm = this.createItemContainer(timelineItem);
-        const itemDate = SimpleTimeline.getItemDate(timelineItem);
 
         const items = this.getItems();
+        items.push(timelineItem);
+        items.sort(this.option.itemComparator);
 
-        var beforeItem = null;
-        for (var i = 0; i < items.length; i++) {
-            const createdItem = items[i];
-            const createdItemDate = SimpleTimeline.getItemDate(createdItem);
+        const headers = this.timeline.getElementsByClassName("st-header-container");
 
-            if (createdItemDate > itemDate) {
-                if (beforeItem == null) {
-                    this.timeline.appendChild(itemContainerElm);
-                } else {
-                    beforeItem.after(itemContainerElm);
-                }
-
-                items.splice(i, 0, timelineItem);
-                break;
+        if (items.length == 1) {
+            if (headers && headers.length == 1) {
+                headers[0].after(itemContainerElm);
+            } else {
+                this.timeline.appendChild(itemContainerElm);
+            }
+        } else if(items.indexOf(timelineItem) == 0) {
+            if (headers && headers.length == 1) {
+                headers[0].after(itemContainerElm);
+            } else {
+                this.timeline.insertBefore(itemContainerElm, this.timeline.firstChild);
             }
 
-            beforeItem = createdItem["refElm"];
-        }
+        } else {
+            var beforeItemContainer = null;
+            for (var i = 0; i < items.length; i++) {
+                const item = items[i];
 
-        if (!items.includes(timelineItem)) {
-            this.timeline.appendChild(itemContainerElm);
-            items.push(timelineItem);
+                if (timelineItem === item) {
+                    if (beforeItemContainer != null) {
+                        beforeItemContainer.after(itemContainerElm);
+                        timelineItem["refElm"] = itemContainerElm;
+                    }
+                    break;
+                }
+                
+                beforeItemContainer = item["refElm"];
+            }
         }
-
     }
 
 
@@ -468,7 +476,7 @@ export default class SimpleTimeline {
      * @param {*} timelineItem 
      * @returns 
      */
-     #appendItem(timelineItem, currentDate = null) {
+    #appendItem(timelineItem, currentDate = null) {
 
         const itemContainerElm = this.createItemContainer(timelineItem, currentDate);
         this.timeline.appendChild(itemContainerElm);
