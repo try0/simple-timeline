@@ -387,6 +387,17 @@
                     }
                 ]
             });
+            var countComparator = 1;
+            $("#btn-add-item-comparator").on("click", function () {
+                const date = new Date();
+                stlComparator.insertItem({
+                    date: date.toLocaleString(),
+                    title: "ダミースケジュール " + countComparator,
+                    content: "ダミースケジュール " + date.toLocaleString(),
+                });
+
+                countComparator += 1;
+            });
 
 
         });
@@ -841,6 +852,8 @@ option: {
                 </div>
             </div>
             <div id="timeline-container-comparator"></div>
+            <button id="btn-add-item-comparator" class="ui primary button"
+            style="margin: 1em; width: 10em; background-color: #356ce2;">追加</button>
         </div>
         <hr>
 
